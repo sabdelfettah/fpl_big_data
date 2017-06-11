@@ -148,6 +148,7 @@ def extractPlayerInfo(currentPlayerGolbalData):
 
 def getPlayerInfo(driver, playersInCurrentPage, players, playersLinks):
 	for player in playersInCurrentPage:
+		print 'Processing a player ...'
 		currentPlayerGolbalData = player.find_elements_by_tag_name("td")
 		name, currentPlayer, playerLinkDetails = extractPlayerInfo(currentPlayerGolbalData)
 		extractPlayerDetails(driver, currentPlayer, playerLinkDetails)
@@ -155,9 +156,11 @@ def getPlayerInfo(driver, playersInCurrentPage, players, playersLinks):
 		filePlayer.write(json.dumps(currentPlayer))
 		filePlayer.close()
 		players[name] = currentPlayer
+		print 'Player', currentPlayer["FULLNAME"], 'processed'
 
 
 # initialization
+print 'Program start'
 driver = webdriver.Chrome()
 driver.get(FPL_LINK)
 players = {}
@@ -165,19 +168,31 @@ pageNumber = 1
 hasNextPage = True
 # look for table that contains player data
 while hasNextPage:
+	print 'Processing page', pageNumber, '...'
 	table = []
 	while len(table) == 0:
 		table = driver.find_elements_by_class_name(SELECTOR_TABLE_PLAYERS)
 		if len(table) == 0:
 			time.sleep(0.5)
+	pageNumber = pageNumber + 1
+	nextPageButton = driver.find_elements_by_xpath('//a[@href="#'+ str(pageNumber) +'"]')
+	if len(nextPageButton) == 0:
+		hasNextPage = False
 	tableBody = table[0].find_elements_by_tag_name("tbody")
 	playersInCurrentPage = tableBody[0].find_elements_by_tag_name("tr")
 	playersLinks = {}
-	getPlayerInfo(driver, playersInCurrentPage, players, playersLinks)
-	pageNumber = pageNumber + 1
-	nextPageButton = driver.find_elements_by_xpath('//a[@href=#"'+ str(pageNumber) +'"]')
-	if len(nextPageButton) == 0:
-		hasNextPage = False
-	else:
+	#getPlayerInfo(driver, playersInCurrentPage, players, playersLinks)
+	if hasNextPage:
+		print 'Passing to page', pageNumber
+		nextPageButton = driver.find_elements_by_xpath('//a[@href="#'+ str(pageNumber) +'"]')
+		while len(nextPageButton) == 0:
+			nextPageButton = driver.find_elements_by_xpath('//a[@href="#'+ str(pageNumber) +'"]')
+			if len(nextPageButton) == 0:
+				time.sleep(0.5)
 		nextPageButton[0].click()
-print players
+	else:
+		print 'All pages was processed'
+filePlayers = open('dumps/players_dump.json', 'w')
+filePlayers.write(json.dumps(players))
+filePlayers.close()
+print 'Program end'
