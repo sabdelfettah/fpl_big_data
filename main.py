@@ -54,7 +54,7 @@ def extractPlayerDetails(driver, currentPlayer, playerLinkDetails):
 		currentPlayer["FULLNAME"] = fullName[0].text
 		# initialize dicts
 		seasons_details = currentPlayer["SEASONS_DETAILS"]
-		season_16_17_details = {}
+		season_17_18_details = {}
 		# current season
 		# season game values
 		dataIndex = 0
@@ -62,18 +62,18 @@ def extractPlayerDetails(driver, currentPlayer, playerLinkDetails):
 			if ARRAY_PLAYER_GAME_VALUES[dataIndex] == "GW38":
 				pass
 			elif ARRAY_PLAYER_GAME_VALUES[dataIndex] == "POINTS":
-				season_16_17_details["POINTS"] = getPoints(value.text)
+				season_17_18_details["POINTS"] = getPoints(value.text)
 			elif ARRAY_PLAYER_GAME_VALUES[dataIndex] == "PRICE":
-				season_16_17_details["PRICE"] = getPrice(value.text)
+				season_17_18_details["PRICE"] = getPrice(value.text)
 			elif ARRAY_PLAYER_GAME_VALUES[dataIndex] == "SELECTION":
-				season_16_17_details["SELECTION"] = getSelection(value.text)
+				season_17_18_details["SELECTION"] = getSelection(value.text)
 			else:
-				season_16_17_details[ARRAY_PLAYER_GAME_VALUES[dataIndex]] = value.text
+				season_17_18_details[ARRAY_PLAYER_GAME_VALUES[dataIndex]] = value.text
 			dataIndex = dataIndex + 1
 		# season fantasy values
 		dataIndex = 0
 		for value in dialogScroll[0].find_elements_by_class_name(SELECTOR_DIALOG_PLAYER_DETAILS_FANTASY_VALUES):
-			season_16_17_details[ARRAY_PLAYER_FANTASY_VALUES[dataIndex]] = value.text
+			season_17_18_details[ARRAY_PLAYER_FANTASY_VALUES[dataIndex]] = value.text
 			dataIndex = dataIndex + 1
 		# tables
 		tableDetails = dialogScroll[0].find_elements_by_class_name(SELECTOR_DIALOG_PLAYER_DETAILS_TABLE)
@@ -96,8 +96,8 @@ def extractPlayerDetails(driver, currentPlayer, playerLinkDetails):
 					gameWeekInfo[ARRAY_PLAYER_DETAILS[dataIndex]] = gameInfo.text
 				dataIndex = dataIndex + 1
 			gameWeeks[gameWeek] = gameWeekInfo
-		season_16_17_details["GAME_WEEKS"] = gameWeeks
-		seasons_details["2016/17"] = season_16_17_details
+		season_17_18_details["GAME_WEEKS"] = gameWeeks
+		seasons_details["2017/18"] = season_17_18_details
 		# old seasons details
 		tableDetailsBody = tableDetails[1].find_elements_by_tag_name("tbody")
 		for oldSeason in tableDetailsBody[0].find_elements_by_tag_name("tr"):
