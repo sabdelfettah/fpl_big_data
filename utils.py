@@ -17,7 +17,7 @@ class Utils():
     
     @staticmethod
     def write_player_data(player_data):
-        file_name = 'dumps/player_{0}.json'.format(player_data["FULLNAME"].replace(' ', '_'))
+        file_name = 'dumps/player_' + player_data["FULLNAME"].replace(' ', '_') + '.json'
         file_player = open(file_name, 'w')
         file_player.write(json.dumps(player_data))
         file_player.close()
@@ -36,8 +36,8 @@ class Utils():
 
     @staticmethod
     def print_running(message):
-        print '{0}...'.format(message)
+        print message + '...'
 
     @staticmethod
     def print_success(message):
-        print '{0}[OK]'.format(Utils.jamString(message, 46))
+        print Utils.jamString(message, 46) + '[OK]'

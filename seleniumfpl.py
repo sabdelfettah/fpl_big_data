@@ -56,7 +56,7 @@ class SeleniumFPL():
             self.extract_current_player_extra_data()
             Utils.write_player_data(self.current_player_data)
             players_dict[self.current_player_name] = self.current_player_data
-            Utils.print_success('Processing player {0}'.format(self.current_player_data["FULLNAME"]))
+            Utils.print_success('Processing player ' + self.current_player_data["FULLNAME"])
 
     def extract_current_player_data(self):
         self.current_player_data = {}
@@ -71,7 +71,7 @@ class SeleniumFPL():
             elif ARRAY_PLAYER_DATA[data_index] == "NAME":
                 self.current_player_details_clickable_element = player_info.find_element_by_class_name(SELECTOR_PLAYER_NAME)
                 self.current_player_name = self.current_player_details_clickable_element.text
-                Utils.print_running('Processing player {0}'.format(self.current_player_name))
+                Utils.print_running('Processing player ' + self.current_player_name)
                 self.current_player_data["NAME"] = self.current_player_name
                 self.current_player_data["CLUB"] = player_info.find_element_by_class_name(SELECTOR_PLAYER_CLUB).text
                 self.current_player_data["POSITION"] = player_info.find_element_by_class_name(SELECTOR_PLAYER_POSITION).text
@@ -91,7 +91,11 @@ class SeleniumFPL():
             self.current_player_data["FULLNAME"] = "UNKNOWN"
             return
         else:
-            self.current_player_details_clickable_element.click()
+            try:
+                self.current_player_details_clickable_element.click()
+            except:
+                self.driver.execute_script("arguments[0].click();", self.current_player_details_clickable_element)
+            
         # looking for content
         dialog_header = self.driver.find_element_by_class_name(SELECTOR_DIALOG_PLAYER_DETAILS_HEADER)
         dialog_scroll = self.driver.find_element_by_class_name(SELECTOR_DIALOG_PLAYER_DETAILS_SCROLL)
