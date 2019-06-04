@@ -1,1 +1,1 @@
-python main.py
+"%PYTHON_2_HOME%"\python main.py

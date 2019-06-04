@@ -104,7 +104,7 @@ class SeleniumFPL():
         self.current_player_data["FULLNAME"] = full_name_header.text
 		# initialize dicts
         seasons_details = self.current_player_data["SEASONS_DETAILS"]
-        season_17_18_details = {}
+        season_18_19_details = {}
 		# current season
 		# season game values
         data_index = 0
@@ -112,18 +112,18 @@ class SeleniumFPL():
             if ARRAY_PLAYER_GAME_VALUES[data_index] == "GW38":
                 pass
             elif ARRAY_PLAYER_GAME_VALUES[data_index] == "POINTS":
-				season_17_18_details["POINTS"] = Utils.get_points(value.text)
+				season_18_19_details["POINTS"] = Utils.get_points(value.text)
             elif ARRAY_PLAYER_GAME_VALUES[data_index] == "PRICE":
-				season_17_18_details["PRICE"] = Utils.get_price(value.text)
+				season_18_19_details["PRICE"] = Utils.get_price(value.text)
             elif ARRAY_PLAYER_GAME_VALUES[data_index] == "SELECTION":
-				season_17_18_details["SELECTION"] = Utils.get_selection(value.text)
+				season_18_19_details["SELECTION"] = Utils.get_selection(value.text)
             else:
-				season_17_18_details[ARRAY_PLAYER_GAME_VALUES[data_index]] = value.text
+				season_18_19_details[ARRAY_PLAYER_GAME_VALUES[data_index]] = value.text
             data_index = data_index + 1
 		# season fantasy values
         data_index = 0
         for value in dialog_scroll.find_elements_by_class_name(SELECTOR_DIALOG_PLAYER_DETAILS_FANTASY_VALUES):
-			season_17_18_details[ARRAY_PLAYER_FANTASY_VALUES[data_index]] = value.text
+			season_18_19_details[ARRAY_PLAYER_FANTASY_VALUES[data_index]] = value.text
 			data_index = data_index + 1
 		# tables
         table_details = dialog_scroll.find_elements_by_class_name(SELECTOR_DIALOG_PLAYER_DETAILS_TABLE)
@@ -146,8 +146,8 @@ class SeleniumFPL():
 					game_week_info[ARRAY_PLAYER_DETAILS[data_index]] = game_info.text
 				data_index = data_index + 1
 			game_weeks[game_week] = game_week_info
-        season_17_18_details["GAME_WEEKS"] = game_weeks
-        seasons_details["2017/18"] = season_17_18_details
+        season_18_19_details["GAME_WEEKS"] = game_weeks
+        seasons_details["2018/19"] = season_18_19_details
 		# old seasons details
         table_details_body = table_details[1].find_element_by_tag_name("tbody")
         for old_season in table_details_body.find_elements_by_tag_name("tr"):
@@ -163,7 +163,7 @@ class SeleniumFPL():
 				else:
 					season[ARRAY_PLAYER_OLD_SEASONS_DETAILS[data_index]] = season_info.text
 				data_index = data_index + 1
-			if season_name == '2017/18':
+			if season_name == '2018/19':
 				seasons_details["LAST_SEASON_GLOBAL"] = season
 			else:
 				seasons_details[season_name] = season
